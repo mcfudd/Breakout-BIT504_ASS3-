@@ -1,38 +1,21 @@
 import java.awt.Rectangle;
 
-public class Sprite {
+public class Sprite
+{
 	
 	protected int x,y,width,height;
 	
-	// Note: This should only set a single value, they can be done in a single statement
-	public void setX(int x) {
-		// TODO
-	}
-	public void setY(int y) { 
-		// TODO
-	}
-	public void setWidth(int width) { 
-		// TODO
-	}
-	public void setHeight(int height) { 
-		// TODO
-	}
+	// Sprite setters
+	public void setX(int newX) { x = newX; }
+	public void setY(int newY) { y = newY; }
+	public void setWidth(int newWidth) { width = newWidth; }
+	public void setHeight(int newHeight) { height = newHeight; }
+
+	// Sprite getters
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public int getWidth() { return width; }
+	public int getHeight() { return height;	}
 	
-	// Note: Change the "0" to the correct variable
-	public int getX() { 
-		return 0;	// TODO: Return correct value
-	}
-	public int getY() { 
-		return 0;	// TODO: Return correct value
-	}
-	public int getWidth() { 
-		return 0;	// TODO: Return correct value
-	}
-	public int getHeight() { 
-		return 0;	// TODO: Return correct value
-	}
-	
-	Rectangle getRectangle() {
-		return new Rectangle(x, y, width, height);
-	}
+	Rectangle getRectangle() { return new Rectangle(x, y, width, height); }
 }
