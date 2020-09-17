@@ -2,7 +2,6 @@ import java.awt.Rectangle;
 
 public class Sprite
 {
-	
 	protected int x,y,width,height;
 	
 	// Sprite setters

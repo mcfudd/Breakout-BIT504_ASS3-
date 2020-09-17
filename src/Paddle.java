@@ -1,33 +1,45 @@
 import java.awt.Graphics;
 
-public class Paddle extends Sprite {
-
+public class Paddle extends Sprite
+{
 	private int xVelocity;
 	
-	public Paddle() {
-		// TODO: Set width to Settings.PADDLE_WIDTH
-		// TODO: Set width to Settings.PADDLE_HEIGHT
-		// TODO: Call resetPosition
+	public Paddle()
+	{
+		setWidth(Settings.PADDLE_WIDTH); // Set width to Settings.PADDLE_WIDTH
+		setHeight(Settings.PADDLE_HEIGHT); // Set width to Settings.PADDLE_HEIGHT
+		resetPosition(); // Call resetPosition
 	}
 	
-	public void resetPosition() {
-		// TODO: Set initial position x and y (use INITIAL_PADDLE_X/Y)
-		// Note: Check Ball.java for a hint
+	
+	// Set initial position x and y
+	public void resetPosition()
+	{
+		setX(Settings.INITIAL_PADDLE_X);
+		setY(Settings.INITIAL_PADDLE_Y);
 	}
 	
-	public void update() {
+	
+	public void update()
+	{
 		x += xVelocity;
-		
-		// TODO: Prevent the paddle from moving outside of the screen
-		// This can be done using two if statements (one for the left side of the screen and one for the right)
 
+		// Prevent the paddle from moving outside of the screen
+		if (x <= 0)
+			setX(0);
+		if (x >= Settings.WINDOW_WIDTH - Settings.PADDLE_WIDTH)
+			setX(Settings.WINDOW_WIDTH - Settings.PADDLE_WIDTH);
 	}
 	
-	public void paint(Graphics g) {
+	
+	public void paint(Graphics g)
+	{
 		g.fillRect(x, y, Settings.PADDLE_WIDTH, Settings.PADDLE_HEIGHT);
 	}
 	
-	public void setXVelocity(int vel) {
-		// TODO: Set x velocity
+	
+	public void setXVelocity(int vel)
+	{
+		setXVelocity(vel);
 	}
 }
