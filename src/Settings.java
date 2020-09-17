@@ -13,6 +13,8 @@ public class Settings
 	public static final int BRICK_WIDTH = 70;
 	public static final int INITIAL_BALL_X = 150;
 	public static final int INITIAL_BALL_Y = 350;
+	public static final int INITIAL_BALL_X_VELOCITY = 1;
+	public static final int INITIAL_BALL_Y_VELOCITY = 1;
 	public static final int INITIAL_PADDLE_X = 100;
 	public static final int INITIAL_PADDLE_Y = 370;
 	public static final int PADDLE_WIDTH = 100;
