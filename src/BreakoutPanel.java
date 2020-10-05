@@ -10,7 +10,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class BreakoutPanel extends JPanel implements ActionListener, KeyListener {
+public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
+{
 	
 	static final long serialVersionUID = 2L;
 
@@ -29,15 +30,18 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 		Timer timer = new Timer(5, this);
 		timer.start();
 		
-		// TODO: Create a new ball object and assign it to the appropriate variable
-		ball = new Ball();
 		
-		// TODO: Create a new paddle object and assign it to the appropriate variable
-		// TODO: Create a new bricks array (Use Settings.TOTAL_BRICKS)
-		// TODO: Call the createBricks() method
+		ball = new Ball(); // Create a new ball object and assign it to the appropriate variable
+		
+		paddle = new Paddle(); // Create a new paddle object and assign it to the appropriate variable
+		
+		bricks = new Brick[Settings.TOTAL_BRICKS]; // Create a new bricks array (Use Settings.TOTAL_BRICKS)
+		
+		createBricks(); // Call the createBricks() method
 	}
 	
-	private void createBricks() {
+	private void createBricks()
+	{
 		int counter = 0;
 		int x_space = 0;
 		int y_space = 0;
