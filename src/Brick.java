@@ -17,7 +17,7 @@ public class Brick extends Sprite
 	
 	public boolean isBroken()
 	{
-		return false;	// TODO: Return the correct variable
+		return broken;	// TODO: Return the correct variable
 	}
 	
 	
