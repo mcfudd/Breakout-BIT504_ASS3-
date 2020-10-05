@@ -24,4 +24,11 @@ public class Settings
 	public static final int MESSAGE_POSITION = 270;
 	public static final int LIVES_POSITION_X = 5;
 	public static final int LIVES_POSITION_Y = 15;
+	public static final String FONT_STYLE = "Serif";
+	public static final int FONT_SIZE = 40;
+	public static final Color FONT_COLOUR = Color.BLACK;
+	public static final String MESSAGE_WINNER = "WIN!";
+	public static final String MESSAGE_GAMEOVER = "Game Over";
+	public static final int messageXPosition = 50;
+	public static final int messageYPosition = 50;
 }
