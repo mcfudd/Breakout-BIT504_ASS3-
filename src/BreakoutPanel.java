@@ -15,15 +15,17 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 	
 	static final long serialVersionUID = 2L;
 
-	private boolean gameRunning = true;
+	private boolean gameRunning = false;
 	private int livesLeft = 3;
 	private String screenMessage = "";
+	private String gameStart = "Press Enter to Start";
 	private Ball ball;
 	private Paddle paddle;
 	private Brick bricks[];
 	
 	public BreakoutPanel(Breakout game)
 	{
+		
 		addKeyListener(this);
 		setFocusable(true);
 		
@@ -186,6 +188,12 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 		}
 	}
 	
+	public void writeMessage(Graphics g, String message)
+	{
+    	g.setFont(new Font("Arial", Font.BOLD, 18));
+    	int messageWidth = g.getFontMetrics().stringWidth(message);
+    	g.drawString(message, (Settings.WINDOW_WIDTH / 2) - (messageWidth / 2), Settings.MESSAGE_POSITION);
+	}
 	
 	@Override
     public void paintComponent(Graphics g)
@@ -202,12 +210,10 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
         
         // Draw screen message
         if(screenMessage != null)
-        {
-        	g.setFont(new Font("Arial", Font.BOLD, 18));
-        	int messageWidth = g.getFontMetrics().stringWidth(screenMessage);
-        	g.drawString(screenMessage, (Settings.WINDOW_WIDTH / 2) - (messageWidth / 2), Settings.MESSAGE_POSITION);
-        }
-    }
+        	writeMessage(g, screenMessage);
+        if(gameStart != null)
+        	writeMessage(g, gameStart);
+	}
 
 	
 	@Override
@@ -218,6 +224,11 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 			paddle.setXVelocity(-Settings.PADDLE_SPEED);
 		else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
 			paddle.setXVelocity(Settings.PADDLE_SPEED);
+		if (event.getKeyCode() == KeyEvent.VK_ENTER)
+		{
+			gameRunning = true;
+			gameStart = null;
+		}
 	}
 
 	
