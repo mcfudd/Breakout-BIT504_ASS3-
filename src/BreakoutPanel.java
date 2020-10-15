@@ -15,34 +15,30 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 	
 	static final long serialVersionUID = 2L;
 
-	private boolean gameRunning = false;
-	private int livesLeft = 3;
-	private String screenMessage = "";
-	private String gameStart = "Press Enter to Start";
+	private boolean gameRunning = false; //  declares and initialises starting game state
+	private int livesLeft = 3; // life counter
+	private String screenMessage = "Press Enter to Start"; // screen messages variable for win/loss
 	private Ball ball;
 	private Paddle paddle;
 	private Brick bricks[];
 	
 	public BreakoutPanel(Breakout game)
 	{
+		addKeyListener(this); // start the key listener
+		setFocusable(true); // brings the JFrame to focus for keyboard input
 		
-		addKeyListener(this);
-		setFocusable(true);
-		
+		// initialise and start the application timer
 		Timer timer = new Timer(5, this);
 		timer.start();
 		
-		
 		ball = new Ball(); // Create a new ball object and assign it to the appropriate variable
-		
 		paddle = new Paddle(); // Create a new paddle object and assign it to the appropriate variable
 		
 		bricks = new Brick[Settings.TOTAL_BRICKS]; // Create a new bricks array (Use Settings.TOTAL_BRICKS)
-		
 		createBricks(); // Call the createBricks() method
 	}
 	
-	
+	// populates the bricks array and assigns spatial information for each
 	private void createBricks()
 	{
 		int counter = 0;
@@ -62,9 +58,9 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 	}
 	
 	
+	// Loop through and paint the bricks
 	private void paintBricks(Graphics g)
 	{
-		// Loop through and paint the bricks
 		for(Brick currentBrick:bricks)
 		{
 			currentBrick.paint(g);
@@ -72,6 +68,7 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 	}
 	
 	
+	// main game loop
 	private void update()
 	{
 		if(gameRunning)
@@ -84,6 +81,7 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 	}
 	
 	
+	// displays the game over message and halts update()
 	private void gameOver()
 	{
 		screenMessage = "GAMEOVER"; // Set screen message
@@ -91,19 +89,21 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 	}
 	
 	
+	// displays the game win message and halts update()
 	private void gameWon()
 	{
 		screenMessage = "WIN"; // Set screen message
 		stopGame();
 	}
 	
-	
+	// halts game update by changing game state variable gameRunning
 	private void stopGame()
 	{
 		gameRunning = false;
 	}
 	
 	
+	// ball collision management method which also checks for game win/lose and breaks bricks
 	private void collisions()
 	{
 		// Check for loss
@@ -135,13 +135,14 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 				break;
 			}
 		}
+		
 		if(!bricksLeft)
 		{
 			gameWon();
 			return;
 		}
 		
-		// Check collisions
+		// Check ball/paddle collisions and inverts Y velocity of ball
 		if(ball.getRectangle().intersects(paddle.getRectangle()))
 		{
 			// Simplified touching of paddle
@@ -149,45 +150,68 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
 			ball.setYVelocity(-1);
 		}
 		
+		// loop through all bricks
 		for(int i = 0; i < bricks.length; i++)
 		{
+			// check for current brick/ball collision
 			if (ball.getRectangle().intersects(bricks[i].getRectangle()))
 			{
-				int ballLeft = (int) ball.getRectangle().getMinX();
-	            int ballHeight = (int) ball.getRectangle().getHeight();
-	            int ballWidth = (int) ball.getRectangle().getWidth();
-	            int ballTop = (int) ball.getRectangle().getMinY();
-
-	            Point pointRight = new Point(ballLeft + ballWidth + 1, ballTop);
-	            Point pointLeft = new Point(ballLeft - 1, ballTop);
-	            Point pointTop = new Point(ballLeft, ballTop - 1);
-	            Point pointBottom = new Point(ballLeft, ballTop + ballHeight + 1);
-
+				
+// ------------------------ ORIGINAL COLLISION MANGAMENT CODE --------------------------------------------------------------------
+// Ball was occasionally reversing both velocities when hitting mid brick making it rebound at 180d instead of 90d.  
+//				
+//				int ballLeft = (int) ball.getRectangle().getMinX();
+//	            int ballHeight = (int) ball.getRectangle().getHeight();
+//	            int ballWidth = (int) ball.getRectangle().getWidth();
+//	            int ballTop = (int) ball.getRectangle().getMinY();
+//
+//	            Point pointRight = new Point(ballLeft + ballWidth + 1, ballTop);
+//	            Point pointLeft = new Point(ballLeft - 1, ballTop);
+//	            Point pointTop = new Point(ballLeft, ballTop - 1);
+//	            Point pointBottom = new Point(ballLeft, ballTop + ballHeight + 1);
+//				
+// --------------------------------------------------------------------------------------------------------------------------------	            
+	            
+	            // Calculate centre of ball which is used below to determine ball's relative position to the brick
+	            Point ballCentre = new Point(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
+	            
 	            if (!bricks[i].isBroken())
 	            {
-	                if (bricks[i].getRectangle().contains(pointRight))
-	                {
-	                    ball.setXVelocity(-1);
-	                }
-	                else if (bricks[i].getRectangle().contains(pointLeft))
-	                {
-	                    ball.setXVelocity(1);
-	                }
+	            	// Collision management statements to determine which directions to reverse when ball hits bricks
+	            	if (ballCentre.x < bricks[i].getRectangle().getMinX())
+	            		ball.setXVelocity(-1);
+	            	if (ballCentre.x > bricks[i].getRectangle().getMaxX())
+	            		ball.setXVelocity(1);
+	            	if (ballCentre.y < bricks[i].getRectangle().getMinY())
+	            		ball.setYVelocity(-1);
+	            	if (ballCentre.y > bricks[i].getRectangle().getMaxY())
+	            		ball.setYVelocity(1);
 
-	                if (bricks[i].getRectangle().contains(pointTop))
-	                {
-	                    ball.setYVelocity(1);
-	                }
-	                else if (bricks[i].getRectangle().contains(pointBottom))
-	                {
-	                    ball.setYVelocity(-1);
-	                }
-	                bricks[i].setBroken(true);
+	            	
+// ------------------------ ORIGINAL COLLISION MANGAMENT CODE --------------------------------------------------------------------
+// Ball was occasionally reversing both velocities when hitting mid brick making it rebound at 180d instead of 90d.          	
+//	            	
+//	                if (bricks[i].getRectangle().contains(pointRight)) {
+//	                    ball.setXVelocity(-1);
+//	                } else if (bricks[i].getRectangle().contains(pointLeft)) {
+//	                    ball.setXVelocity(1);
+//	                }
+//
+//	                if (bricks[i].getRectangle().contains(pointTop)) {
+//	                    ball.setYVelocity(1);
+//	                } else if (bricks[i].getRectangle().contains(pointBottom)) {
+//	                    ball.setYVelocity(-1);
+//	                }
+//	            	
+// --------------------------------------------------------------------------------------------------------------------------------	                
+	                	            	
+	                bricks[i].setBroken(true); // breaks the brick involved in collision
 	            }
 			}
 		}
 	}
 	
+	// method for printing messages to the JFrame
 	public void writeMessage(Graphics g, String message)
 	{
     	g.setFont(new Font("Arial", Font.BOLD, 18));
@@ -195,8 +219,10 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
     	g.drawString(message, (Settings.WINDOW_WIDTH / 2) - (messageWidth / 2), Settings.MESSAGE_POSITION);
 	}
 	
+	
+
 	@Override
-    public void paintComponent(Graphics g)
+    public void paintComponent(Graphics g) // paints graphics to JFrame 
 	{
         super.paintComponent(g);
 
@@ -211,46 +237,45 @@ public class BreakoutPanel extends JPanel implements ActionListener, KeyListener
         // Draw screen message
         if(screenMessage != null)
         	writeMessage(g, screenMessage);
-        if(gameStart != null)
-        	writeMessage(g, gameStart);
 	}
 
 	
 	@Override
-	public void keyPressed(KeyEvent event)
+	public void keyPressed(KeyEvent event) // manage key presses
 	{
 		// moves paddle depending on whether the player is pressing left or right
 		if (event.getKeyCode() == KeyEvent.VK_LEFT)
 			paddle.setXVelocity(-Settings.PADDLE_SPEED);
 		else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
 			paddle.setXVelocity(Settings.PADDLE_SPEED);
-		if (event.getKeyCode() == KeyEvent.VK_ENTER)
-		{
-			gameRunning = true;
-			gameStart = null;
-		}
 	}
 
 	
 	@Override
-	public void keyReleased(KeyEvent event)
+	public void keyReleased(KeyEvent event) // manage key releases
 	{
 		// stops paddle after the player has released the keys
 		if (event.getKeyCode() == KeyEvent.VK_LEFT || event.getKeyCode() == KeyEvent.VK_RIGHT)
 			paddle.setXVelocity(0);
 		
+		// delay game start until 'enter' key is pressed
+		if (event.getKeyCode() == KeyEvent.VK_ENTER)
+		{
+			gameRunning = true; // sets the game state to active
+			screenMessage = ""; // clears the delay message
+		}
 	}
 
 	
 	@Override
-	public void keyTyped(KeyEvent arg0)
+	public void keyTyped(KeyEvent arg0) // unused, no unicode input required
 	{
 		
 	}
 
 	
 	@Override
-	public void actionPerformed(ActionEvent arg0)
+	public void actionPerformed(ActionEvent arg0) // listens for timer and calls update()
 	{
 		update();
 	}

@@ -1,8 +1,8 @@
 import java.awt.Graphics;
 
-public class Ball extends Sprite {
-
-	private int xVelocity = 1, yVelocity = -1;
+public class Ball extends Sprite
+{
+	private int xVelocity = 1, yVelocity = -1; // Initial ball velocity
 	
 	// Constructor
 	public Ball()
@@ -20,29 +20,32 @@ public class Ball extends Sprite {
 		setY(Settings.INITIAL_BALL_Y);
 	}
 	
+	
+	// method controlling ball behaviour and movement 
 	public void update()
 	{
+		// update ball position based on velocity each time method is called
 		x += xVelocity;
 		y += yVelocity;
 		
 		// Bounce off left side of screen
 		if(x <= 0)
 		{
-			x = 0; // Set x to 0 so it does not leave the screen
+			setX(0); // Set x to 0 so it does not leave the screen
 			xVelocity = xVelocity * -1; // Change the x velocity to make the ball go right
 		}
 		
 		// Bounce off right side of screen
 		if(x >= Settings.WINDOW_WIDTH - Settings.BALL_WIDTH)
 		{
-			x = Settings.WINDOW_WIDTH - Settings.BALL_WIDTH; // Set x to the right edge of the screen
+			setX(Settings.WINDOW_WIDTH - Settings.BALL_WIDTH); // Set x to the right edge of the screen
 			xVelocity = xVelocity * -1; // Change the x velocity to make the ball go left
 		}
 		
 		// Bounce off top of screen
 		if(y <= 0)
 		{
-			y = 0; // Set y to 0 so it does not leave the screen
+			setY(0); // Set y to 0 so it does not leave the screen
 			yVelocity = yVelocity * -1; // Change the y velocity to make the ball go downward
 		}
 	}
@@ -53,6 +56,8 @@ public class Ball extends Sprite {
 	public int getXVelocity() { return xVelocity; }	// Return the x velocity
 	public int getYVelocity() {	return yVelocity; }	// Return the y velocity
 	
+	
+	// draw the ball graphic in the JFrame when called
 	public void paint(Graphics g)
 	{
 		g.fillOval(x, y, Settings.BALL_WIDTH, Settings.BALL_HEIGHT);

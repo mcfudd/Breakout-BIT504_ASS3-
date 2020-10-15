@@ -2,8 +2,10 @@ import java.awt.Graphics;
 
 public class Brick extends Sprite
 {
-	private boolean broken = false;
+	private boolean broken = false; // set initial brick state
 	
+	
+	// set individual brick position and size
 	public Brick(int x, int y)
 	{
 		setX(x); // Set x using the parameter
@@ -15,23 +17,18 @@ public class Brick extends Sprite
 	}
 
 	
-	public boolean isBroken()
-	{
-		return broken;	// Return brick state
-	}
+	// check to see if a brick state is broken
+	public boolean isBroken() { return broken; }// getter
 	
 	
-	public void setBroken(boolean b)
-	{
-		broken = b; // Set the broken variable using the parameter given
-	}
+	// change state of brick to broken when called
+	public void setBroken(boolean b) { broken = b; } // setter
 	
 	
+	// paint the brick graphic in the JFrame when called
 	public void paint(Graphics g)
 	{
-		if(!broken)
-		{
+		if(!broken) // controls which bricks are visible broken/unbroken
 			g.fillRect(x, y, Settings.BRICK_WIDTH, Settings.BRICK_HEIGHT);
-		}
 	}
 }

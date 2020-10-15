@@ -11,10 +11,11 @@ public class Sprite
 	public void setHeight(int newHeight) { height = newHeight; }
 
 	// Sprite getters
-	public int getX() { return x; }
+	public int getX() { return x; } 
 	public int getY() { return y; }
 	public int getWidth() { return width; }
 	public int getHeight() { return height;	}
 	
+	// Returns sprite dimensions as a rectangle function
 	Rectangle getRectangle() { return new Rectangle(x, y, width, height); }
 }
